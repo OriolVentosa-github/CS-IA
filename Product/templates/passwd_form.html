@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}BMIndfull &middot; Password{% endblock %}
+
+{% block content %}
+	<div class="card my-5 mx-auto" style="max-width:50%">
+	  <h5 class="card-header text-black bg-success"><b>{{ form.title }}</b></h5>
+	  <div class="card-body">
+	    <p>{{ form.message }}</p>
+		<form method="POST">
+		  {{ form.hidden_tag() }}
+		  <div class="form-group">
+			{{ form.password.label }}
+			{{ form.password(class='form-control') }}
+		  </div>
+		  <div class="form-group">
+			{{ form.passnew1.label }}
+			{{ form.passnew1(class='form-control') }}
+			<small class="form-text text-muted">{{ form.passnew1.description }}</small>
+		  </div>
+		  <div class="form-group">
+			{{ form.passnew2.label }}
+			{{ form.passnew2(class='form-control') }}
+			<small class="form-text text-muted">{{ form.passnew2.description }}</small>
+		  </div>
+		  {{ form.submit(class='btn btn-success') }}
+		  <a href="/benchmark" class="btn btn-outline-secondary">Cancel</a>
+		</form>		
+	  </div>
+	</div>
+{% endblock %}

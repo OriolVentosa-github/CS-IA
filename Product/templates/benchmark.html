@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}BMIndfull &middot; Benchmark{% endblock %}
+
+{% block content %}
+	<div class="container">
+	  <div class="row my-5">
+	    <div class="col-12">
+		  <h2>{{ data.title }}</h2>
+		</div>
+	  </div>
+      <div class="row my-5">
+        <div class="col-6">
+		  <!-- Left column (wide) start -->
+		  <div class="card mx-auto">
+		    <h5 class="card-header text-black bg-success">Results</h5>
+			<div class="card-body">
+			  {% if data.results %}
+			  <table class="table">
+			    <thead class="thead-light">
+				  <tr>
+				    <th>Weight (kg)</th>
+				    <th>Date</th>
+				    <th>BMI</th>
+				    <th></th>
+				  </tr>
+				</thead>
+				<tbody>
+			      {% for item in data.results %}
+				  <tr>
+					<td>{{ item.weight }}</td>
+			        <td>{{ item.date.strftime('%d. %m. %Y') }}</td>
+					<td>{{ item.bmi }}</td>
+					<td>
+					  <a href="/result/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
+					  <a href="/result/delete/{{ item.id }}" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+					</td>
+			      </tr>
+			      {% endfor %}
+			    </tbody>
+			  </table>
+			  {% else %}
+			  <div>No results to display.</div>
+			  {% endif %}
+			  <div>
+			    <a href="/result/add"><i class="fa-solid fa-plus"></i> New</a>
+			  </div>
+			</div>
+		  </div>
+		  <!-- Left column (wide) end -->
+		</div>
+        <div class="col-6">
+
+		  <div class="card mx-auto">
+		    <h5 class="card-header text-black bg-success">BMI range</h5>
+			<div class="card-body">
+			 <img class="d-block w-100" src="{{ url_for('static', filename='pictures/nice4.jpg') }}" alt="bmi graph">
+			
+			
+			
+               <!-- BMI labels go here -->
+			</div>
+		  </div>
+
+		  <div class="card my-4 mx-auto">
+		    <h5 class="card-header text-black bg-success">Your BMI progress over time</h5>
+			<div class="card-body">
+			  <canvas id="myChart" width="400" height="200"></canvas>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+	const ctx = document.getElementById('myChart');
+	const myChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: {{ data.labels|safe }},
+			datasets: [{
+				label: '{{ data.title }}',
+				data: {{ data.data|safe }},
+				fill: false,
+				borderColor: 'rgb(92, 184, 92)',
+			}]
+		},
+	});
+	</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}BMIndfull &middot; {{ form.title }}{% endblock %}
+
+{% block content %}
+	<div class="card my-5 mx-auto" style="max-width:50%">
+	  <h5 class="card-header text-black bg-success"><b>{{ form.title }}</b></h5>
+	  <div class="card-body">
+	    <p>{{ form.message }}</p>
+		<form method="POST">
+		  {{ form.hidden_tag() }}
+		  {{ form.submit(class='btn btn-danger') }}
+		  <a href="/benchmark" class="btn btn-outline-secondary">Cancel</a>
+		</form>		
+	  </div>
+	</div>
+{% endblock %}

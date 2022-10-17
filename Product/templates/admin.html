@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}BMIndfull &middot; Administration{% endblock %}
+
+{% block content %}
+	<div class="container">
+	  <div class="row my-5">
+	    <div class="col-12">
+		  <h2>{{ data.title }}</h2>
+		</div>
+	  </div>
+      <div class="row my-5">
+        <div class="col-12">
+		  <div class="card mx-auto">
+		    <h5 class="card-header text-black bg-success"><b>Users</b></h5>
+			<div class="card-body">
+			  {% if data.users %}
+			  <table class="table">
+			    <thead class="thead-light">
+				  <tr>
+				    <th>Firstname</th>
+				    <th>Lastname</th>
+				    <th>Username</th>
+				    <th>Birth date</th>
+				    <th>Admin?</th>
+				    <th></th>
+				  </tr>
+				</thead>
+				<tbody>
+			      {% for item in data.users %}
+				  <tr>
+			        <td>{{ item.firstname }}</td>
+			        <td>{{ item.lastname }}</td>
+			        <td>{{ item.username }}</td>
+			        <td>{{ item.birth_date.strftime('%d. %m. %Y') }}</td>
+			        <td>{% if item.is_admin %}<i class="fa-solid fa-check text-success mx-3"></i>{% endif %}</td>
+					<td>
+					  {% if item.id != 1 %}
+					  <a href="/user/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
+					  <a href="/user/delete/{{ item.id }}" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+					  {% endif %}
+					</td>
+			      </tr>
+			      {% endfor %}
+			    </tbody>
+			  </table>
+			  {% else %}
+			  <div>No users to display.</div>
+			  {% endif %}
+			  <div>
+			    <a href="/user/add"><i class="fa-solid fa-plus"></i> New</a>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script>
+	const ctx = document.getElementById('myChart');
+	const myChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: {{ data.labels|safe }},
+			datasets: [{
+				label: '{{ data.title }}',
+				data: {{ data.data|safe }},
+				fill: false,
+				borderColor: 'rgb(75, 192, 192)',
+			}]
+		},
+	});
+	</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}BMIndfull &middot; {{ title }}{% endblock %}
+
+{% block content %}
+	<div class="card my-5 mx-auto" style="max-width:30%">
+	  <h5 class="card-header text-black bg-success"><b>{{ form.title }}</b></h5>
+	  <div class="card-body">
+		<form method="POST">
+		  {{ form.hidden_tag() }}
+		  <div class="form-group">
+			{{ form.firstname.label }}
+			{{ form.firstname(class='form-control') }}
+		  </div>
+		  <div class="form-group">
+			{{ form.lastname.label }}
+			{{ form.lastname(class='form-control') }}
+		  </div>
+		  <div class="form-group">
+			{{ form.username.label }}
+			{{ form.username(class='form-control') }}
+		  </div>
+		  {% if form.register %}
+		  <div class="form-group">
+			{{ form.password.label }}
+			{{ form.password(class='form-control') }}
+			<small class="form-text text-muted">{{ form.password.description }}</small>
+		  </div>
+		  {% endif %}
+		  <div class="form-group">
+			{{ form.birth_date.label }}
+			{{ form.birth_date(class='form-control') }}
+		  </div>
+  	      {% if user and user.is_admin %}
+		  <div class="form-group">
+			{{ form.is_admin.label }}
+			{{ form.is_admin(class='form-control') }}
+		  </div>
+		  {% endif %}
+		  {{ form.submit(class='btn btn-success') }}
+  	      {% if user and user.is_admin %}
+		  <a href="/admin" class="btn btn-outline-secondary">Cancel</a>
+		  {% else %}
+		  <a href="/index" class="btn btn-outline-secondary">Cancel</a>
+		  {% endif %}
+		</form>		
+	  </div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+	  $('#birth_date').datepicker({
+		format: "dd. mm. yyyy"
+	  });
+	</script>
+{% endblock %}

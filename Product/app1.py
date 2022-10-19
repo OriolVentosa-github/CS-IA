@@ -4,7 +4,7 @@ This is a web application that helps the user to track their BMI progress.
 This web applications is made using Flask
 framework with Python and WTForms, connected to database using SQLAlchemy.
 
-@autor      Oriol Ventosa
+@autor      Oriol Ventosa Freire
 @licence    GNU GPL
 @copyright  (C) Oriol Ventosa Freire 2022
 

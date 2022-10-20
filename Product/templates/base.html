@@ -19,14 +19,31 @@ background: linear-gradient(0deg, rgb(209, 45, 19) 0%, rgb(211, 20, 20) 70%);}
 	<!-- FontAwesome CSS -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome-6.1.1.min.css') }}">
 	<!-- Page specific CSS styles -->
+	<style>
+	body {
+	  background-colour: #2683e0;
+	}
+	.custom-gradient1 {
+	   background: rgb(149,32,14);
+	   background: linear-gradient(0deg, rgb(209, 45, 19) 0%, rgb(211, 20, 20) 70%);
+	}
+	.card {
+	/* override card border */
+	   .border: 0;	
+	}
+	.card-header {
+	/* override dfault Bootstrap behaviour*/
+	   border-bottom: 0;
+	}
+	</style>
 	{% block style %}{% endblock%}
 </head>
 
 <body>
 
 	<!-- Navigation bar start -->
-	<nav class="navbar navbar-expand-lg navbar-light bg-success">
-	  <a class="navbar-brand" href="/"><b>Pressure Tracker</b></a> 
+	<nav class="navbar navbar-expand-lg navbar-light custom-gradient1">
+	  <a class="navbar-brand text-white" href="/"><b>Pressure Tracker</b></a> 
 	  <!-- The line above is what is written on the navbar name of the website-->
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
@@ -36,14 +53,14 @@ background: linear-gradient(0deg, rgb(209, 45, 19) 0%, rgb(211, 20, 20) 70%);}
 
 		<ul class="navbar-nav mr-auto">
 		  <li class="nav-item">
-			<a class="nav-link" href="/"><b>Home</b></a>
+			<a class="nav-link text-white" href="/"><b>Home</b></a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link" href="/benchmark"><b>Tracker</b></a>
+			<a class="nav-link text-white" href="/benchmark"><b>Tracker</b></a>
 		  </li>
 		  {% if user and user.is_admin %}
 		  <li class="nav-item">
-			<a class="nav-link" href="/admin">Administration</a>
+			<a class="nav-link text-white" href="/admin">Administration</a>
 		  </li>
 		  {% endif %}
 		</ul>

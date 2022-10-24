@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}BMIndfull &middot; Benchmark{% endblock %}
+{% block title %}Pressure Tracker &middot; Benchmark{% endblock %}
 
-{% block style%}
-{%endblock%}
+{% block style %}
+{%endblock %}
 
 {% block content %}
 	<div class="container">
@@ -46,7 +46,7 @@
 			  <div>No results to display.</div>
 			  {% endif %}
 			  <div>
-			    <a href="/result/add"><i class="fa-solid fa-plus"></i> New result</a>
+			    <a href="/result/add"><i class="fa-solid fa-plus"></i>New result</a>
 			  </div>
 			</div>
 		  </div>
@@ -56,7 +56,7 @@
 
 		  <div class="card mx-auto">
 		    <h5 class="card-header text-white bg=class= custom-gradient1"><b>Blood pressure range</b></h5>
-			<div class="card-body bg-black">
+			<div class="card-body">
 			 <img class="d-block w-100" src="{{ url_for('static', filename='pictures/nice4.jpg') }}" alt="blood pressure range graph">
 			
 			

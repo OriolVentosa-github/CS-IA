@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}BMIndfull{% endblock %}
+{% block title %}Pressure Tracker{% endblock %}
 
 {% block style %}
 	<style>
@@ -11,21 +11,22 @@
 	  margin:0 25%;
 	  position:absolute;
 	  z-index:12;
-	  top:33%;
+	  top:40%;
 	  left:0;
 	  width:50%;
 	  text-align:center;
-	  background-color: rgba(0,0,0,0.5);
-	  font-family:'Orelega One',serif;
-	  border-radius: 20px;
+	  background-color: rgba(0,0,0,0.85); /* 0.85 is the opacity of the background in the main page, this determines how transparent the box the title is in is.*/
+	  font-family:'Neue Helvetica',serif;
+	  border-radius: 1000px;
 	}
 	</style>
 {% endblock %}
 
 {% block content %}
+<style> class= </style>
 	<div class="overlay p-3">
-	  <h1><span class="text-success">BMI</span>ndfull</h1>
-	  <h3>For you to say <span class="text-success">I'm healthy</span></h3>
+	  <h1> <div class="text-light"> Pressure Tracker</div></h1>
+	  <h3> <div class="text-light"> Welcome to your personal blood pressure tracker!</div></h3>
 	</div>
 	
 	<div id="carouselBMIndfull" class="carousel slide" data-ride="carousel">
@@ -43,17 +44,17 @@
 		  <img class="d-block w-100" src="{{ url_for('static', filename='pictures/nice3.jpg') }}" alt="r6">
 		</div>
 	  </div>
-	  <a class="carousel-control-prev" href="#carouselTownofSalem" role="button" data-slide="prev">
+	  <a class="carousel-control-prev" href="#carouselxd" role="button" data-slide="prev">
 		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 		<span class="sr-only">Previous</span>
 	  </a>
-	  <a class="carousel-control-next" href="#carouselTownofSalem" role="button" data-slide="next">
+	  <a class="carousel-control-next" href="#carouselxd" role="button" data-slide="next">
 		<span class="carousel-control-next-icon" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	  </a>
 	</div>
 	
-	<div class="p-3">
+	<div class="p-2">
 	  <center>
         {% if user and user.loggedin %}
 	    <a href="/benchmark" class="btn btn-primary">Start here</a>

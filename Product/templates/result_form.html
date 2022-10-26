@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}BMIndfull &middot; {{ form.title }}{% endblock %}
+{% block title %}Pressure Tracker &middot; {{ form.title }}{% endblock %}
 
 {% block content %}
 	<div class="card my-5 mx-auto" style="max-width:30%">
-	  <h5 class="card-header text-black bg-success">{{ form.title }}</h5>
+	  <h5 class="card-header text-light bg=class custom-gradient1">{{ form.title }}</h5>
 	  <div class="card-body">
 		<form method="POST">
 		  {{ form.hidden_tag() }}

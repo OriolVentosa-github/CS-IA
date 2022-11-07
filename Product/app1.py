@@ -88,7 +88,7 @@ def benchmark():
 
     
     # Get specific user's results based on category ID
-    results = db.session.query(Result).filter((Result.user_id == session['user_id']))
+    results = db.session.query(Result).filter((Result.user_id == session['user_id'] )) #""and Result.morning == 1""
 
     #for result in results:
     #    result.BMI = round(float(result.weight) / float(result.height) ** 2, 1)
@@ -139,8 +139,7 @@ def add_result():
             record = Result(
                 user_id = session['user_id'],
                 weight = request.form.get('weight'),
-                height = request.form.get('height'),
-                bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1),
+                #bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1),
                 date = datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
             )
 
@@ -194,8 +193,8 @@ def edit_result(id):
             print("Processing form")
             # Update data record
             record.weight = request.form.get('weight')
-            record.height = request.form.get('height')
-            record.bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1)
+            
+            #record.bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1)
             record.date = datetime.strptime(request.form.get('date'), '%d. %m. %Y')
 
             # Save data to the database
@@ -750,7 +749,7 @@ def get_benchmarks():
 class AddResultForm(FlaskForm):
     title = 'Add result'
     weight = StringField(
-        'Weight in kilograms',
+        'Blood pressure (mmHg)',
          validators = [DataRequired('You must provide your weight.')]
         # choices = get_categories(),
         # Make sure that values are integers,otherwise
@@ -758,8 +757,8 @@ class AddResultForm(FlaskForm):
         
     )
     height = StringField(
-        'Height in metres',
-        validators = [DataRequired('You must provide your height.')]
+        'Time of day',
+        validators = [DataRequired('You must provide the time of day, at which you measured your blood pressure')]
     )
     date = StringField(
         'Date of measuring',
@@ -1083,15 +1082,15 @@ class Result(db.Model):
     # Relationship
     user = db.relationship('User')
 
-    def __init__(self, user_id, weight, height, date, bmi):
-        self.user_id  = user_id
-        self.weight   = weight
-        self.height   = height
-        self.bmi      = round(float(weight) / float(height) ** 2, 1)
-        self.date     = date
-    
-    def __repr__(self):
-        return '<Result %r>' % self.weight
+#    def __init__(self, user_id, weight, height, date, bmi):
+#       self.user_id  = user_id
+#       self.weight   = weight
+#       self.height   = height
+#       self.bmi      = round(float(weight) / float(height) ** 2, 1)
+#       self.date     = date
+#   
+#   def __repr__(self):
+#       return '<Result %r>' % self.weight
 
 
 # Database model for Benchmark entity

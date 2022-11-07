@@ -22,10 +22,9 @@
 			  <table class="table">
 			    <thead class="thead-light">
 				  <tr>
-				    <th>Weight (kg)</th>
+				    <th>Blood Pressure (mmHg)</th>
 				    <th>Date</th>
-				    <th>BMI</th>
-				    <th></th>
+					<th></th>
 				  </tr>
 				</thead>
 				<tbody>
@@ -33,7 +32,6 @@
 				  <tr>
 					<td>{{ item.weight }}</td>
 			        <td>{{ item.date.strftime('%d. %m. %Y') }}</td>
-					<td>{{ item.bmi }}</td>
 					<td>
 					  <a href="/result/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
 					  <a href="/result/delete/{{ item.id }}" class="text-danger"><i class="fa-solid fa-trash"></i></a>

@@ -8,29 +8,35 @@
 	<div class="card-body">
 		<form method="POST">
 			{{ form.hidden_tag() }}
-			<div class="form-group">
-				{{ form.weight.label }}
-				{{ form.weight(class='form-control') }}
+			Blood pressure (mmHg)
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					{{ form.systolic(class='form-control') }}
+				</div>
+				<div class="form-group col-md-6">
+					{{ form.diastolic(class='form-control') }}
+				</div>
 			</div>
 			<div class="form-group">
 				{{ form.date.label }}
 				{{ form.date(class='form-control') }}
 			</div>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
-				<label class="form-check-label" for="gridRadios1">
-					{{ form.height.label}}
-					{{form.height(class='form-control')}}
-					Morning
-				</label>
-			</div>
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-				<label class="form-check-label" for="gridRadios2">
-					Night
-				</label>
-			</div>
+			<!--
 			<div class="form-group">
+				<div class="custom-control custom-radio custom-control-inline">
+					<input type="radio" id="customRadioInline1" name="customRadioInline" class="custom-control-input">
+					<label class="custom-control-label" for="customRadioInline1">Toggle this custom radio</label>
+				</div>
+				<div class="custom-control custom-radio custom-control-inline">
+					<input type="radio" id="customRadioInline2" name="customRadioInline" class="custom-control-input">
+					<label class="custom-control-label" for="customRadioInline2">Or toggle this other custom
+						radio</label>
+				</div>
+			</div>
+			//-->
+			<div class="form-group">
+				{{ form.daytime.label }}
+				{{ form.daytime(class='form-control') }}
 			</div>
 			{{ form.submit(class='btn btn-primary') }}
 			<a href="/benchmark" class="btn btn-outline-secondary">Cancel</a>

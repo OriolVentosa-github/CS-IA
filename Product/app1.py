@@ -103,8 +103,8 @@ def benchmark():
         data = []
         for result in results:
             labels.append(str(result.date.strftime('%d. %m. %Y')))
-            data.append(result.bmi)
-
+            data.append(result.height)
+#this line above puts the height in the y axis instead of showing the bmi on the y axis
     # Get category title from category ID
     #title = get_category_title_from_id(id)
 
@@ -139,6 +139,7 @@ def add_result():
             record = Result(
                 user_id = session['user_id'],
                 weight = request.form.get('weight'),
+                height = request.form.get('height'),
                 #bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1),
                 date = datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
             )
@@ -748,17 +749,27 @@ def get_benchmarks():
 # Form to add result
 class AddResultForm(FlaskForm):
     title = 'Add result'
-    weight = StringField(
-        'Blood pressure (mmHg)',
-         validators = [DataRequired('You must provide your weight.')]
-        # choices = get_categories(),
-        # Make sure that values are integers,otherwise
-        # form validation will not validate the form.
-        
+    systolic = StringField(
+        'Systolic',
+        validators = [DataRequired('You must provide your weight.')],
+        render_kw = {'placeholder': 'Systolic'}
     )
-    height = StringField(
+    diastolic = StringField(
+        'Diastolic',
+        validators = [DataRequired('You must provide the time of day, at which you measured your blood pressure')],
+        render_kw = {'placeholder': 'Diastolic'}
+    )
+    
+    daytime = BooleanField(
         'Time of day',
-        validators = [DataRequired('You must provide the time of day, at which you measured your blood pressure')]
+        render_kw = {
+            'data-toggle': 'toggle',
+            'data-size': 's',  # Extra small
+            'data-on': 'Morning',
+            'data-off': 'Night',
+            'data-onstyle': 'warning',
+            'data-offstyle': 'dark'
+        }
     )
     date = StringField(
         'Date of measuring',

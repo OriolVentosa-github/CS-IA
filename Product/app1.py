@@ -96,14 +96,17 @@ def benchmark():
     if results.count() == 0:
         results = None
         labels = None
-        data = None
+        data_s = None
+        data_d = None
     else:
         # Format data to be used in graph
         labels = []
-        data = []
+        data_s = []
+        data_d = []
         for result in results:
             labels.append(str(result.date.strftime('%d. %m. %Y')))
-            data.append(result.height)
+            data_s.append(result.systolic)
+            data_d.append(result.diastolic)
 #this line above puts the height in the y axis instead of showing the bmi on the y axis
     # Get category title from category ID
     #title = get_category_title_from_id(id)
@@ -113,7 +116,8 @@ def benchmark():
        # 'benchmark': benchmark,
         'results': results,
         'labels': labels,
-        'data': data,
+        'data_s': data_s,
+        'data_d': data_d,
     }
 
     # Display page with the results/benchmark
@@ -138,9 +142,10 @@ def add_result():
             # Create data record
             record = Result(
                 user_id = session['user_id'],
-                weight = request.form.get('weight'),
-                height = request.form.get('height'),
+                diastolic = request.form.get('diastolic'),
+                systolic = request.form.get('systolic'),
                 #bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1),
+                daytime = request.form.get('daytime'),
                 date = datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
             )
 
@@ -751,17 +756,16 @@ class AddResultForm(FlaskForm):
     title = 'Add result'
     systolic = StringField(
         'Systolic',
-        validators = [DataRequired('You must provide your weight.')],
+        validators = [DataRequired('You must provide your systolic blood pressure reading.')],
         render_kw = {'placeholder': 'Systolic'}
     )
     diastolic = StringField(
         'Diastolic',
-        validators = [DataRequired('You must provide the time of day, at which you measured your blood pressure')],
+        validators = [DataRequired('You must provide your diastolic blood pressure reading.')],
         render_kw = {'placeholder': 'Diastolic'}
     )
-    
     daytime = BooleanField(
-        'Time of day',
+        'daytime',
         render_kw = {
             'data-toggle': 'toggle',
             'data-size': 's',  # Extra small
@@ -784,16 +788,16 @@ class AddResultForm(FlaskForm):
 # Form to edit result
 class EditResultForm(FlaskForm):
     title = 'Edit result'
-    weight = StringField(
-        'Weight in kilograms',
+    diastolic = StringField(
+        'Diastolic', #previously said weight in kg
         validators = [DataRequired('You must provide event name.')]
       #  choices = get_categories(),
         # Make sure that values are integers,otherwise
         # form validation will not validate the form.
         
     )
-    height = StringField(
-        'Height in metres',
+    systolic = StringField(
+        'Systolic', # previsouly said heigt in metres
         validators = [DataRequired('You must provide event name.')]
     )
     date = StringField(
@@ -1086,9 +1090,9 @@ class Result(db.Model):
     __tablename__ = 'result'
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    weight = db.Column(db.String, nullable=False)
-    height = db.Column(db.String, nullable=False)
-    bmi = db.Column(db.String, nullable=True)
+    diastolic = db.Column(db.String, nullable=False)
+    systolic = db.Column(db.String, nullable=False)
+    daytime = db.Column(db.String, nullable=True)
     date = db.Column(db.DateTime, nullable=False)
     # Relationship
     user = db.relationship('User')

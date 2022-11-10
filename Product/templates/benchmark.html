@@ -22,7 +22,9 @@
 					<table class="table">
 						<thead class="thead-light">
 							<tr>
-								<th>Blood Pressure (mmHg)</th>
+								<th>Systolic</th>
+								<th>Diastolic</th>
+								<th>Time</th>
 								<th>Date</th>
 								<th></th>
 							</tr>
@@ -30,7 +32,9 @@
 						<tbody>
 							{% for item in data.results %}
 							<tr>
-								<td>{{ item.weight }}</td>
+								<td>{{ item.systolic }}</td>
+								<td>{{ item.diastolic }}</td>
+								<td>{{item.daytime}}</td>
 								<td>{{ item.date.strftime('%d. %m. %Y') }}</td>
 								<td>
 									<a href="/result/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
@@ -83,33 +87,33 @@
 		type: 'line',
 		data: {
 			labels: {{ data.labels | safe }},
-			datasets: [{
-				label: 'Systolic',
-				data: {{data.data | safe }},
-				backgroundColor: [
-					'rgba(105, 0, 132, .2)',
-				],
-				borderColor: [
-					'rgba(200, 99, 132, .7)',
-				],
-				borderWidth: 2
+	datasets: [{
+		label: 'Systolic',
+		data: {{ data.data_s | safe }},
+		backgroundColor: [
+		'rgba(105, 0, 132, .2)',
+	],
+		borderColor: [
+		'rgba(200, 99, 132, .7)',
+	],
+		borderWidth: 2
 			},
-			{
-				label: 'Diastolic',
-				data: [5,10,5,30,9],
-				backgroundColor: [
-					'rgba(0, 137, 132, .2)',
-				],
-				borderColor: [
-					'rgba(0, 10, 130, .7)',
-				],
-				borderWidth: 2
+	{
+		label: 'Diastolic',
+		data: {{ data.data_d | safe }},
+		backgroundColor: [
+		'rgba(0, 137, 132, .2)',
+	],
+		borderColor: [
+		'rgba(0, 10, 130, .7)',
+	],
+		borderWidth: 2
 			}
-			]
+	]
 		},
-		options: {
-			responsive: true
-		}
+	options: {
+		responsive: true
+	}
 	});
 </script>
 {% endblock %}

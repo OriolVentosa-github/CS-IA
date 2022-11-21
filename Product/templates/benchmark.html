@@ -70,7 +70,7 @@
 			</div>
 
 			<div class="card my-4 mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time 'date'</h5>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time</h5>
 				<div class="card-body">
 					<canvas id="myChart" width="400" height="180"></canvas>
 				</div>
@@ -84,36 +84,24 @@
 <script>
 	var ctxL = document.getElementById("myChart").getContext('2d');
 	var myLineChart = new Chart(ctxL, {
-		type: 'line',
+		type: 'bar',
 		data: {
 			labels: {{ data.labels | safe }},
-	datasets: [{
-		label: 'Systolic',
-		data: {{ data.data_s | safe }},
-		backgroundColor: [
-		'rgba(105, 0, 132, .2)',
-	],
-		borderColor: [
-		'rgba(200, 99, 132, .7)',
-	],
-		borderWidth: 2
-			},
-	{
-		label: 'Diastolic',
-		data: {{ data.data_d | safe }},
-		backgroundColor: [
-		'rgba(0, 137, 132, .2)',
-	],
-		borderColor: [
-		'rgba(0, 10, 130, .7)',
-	],
-		borderWidth: 2
-			}
-	]
-		},
-	options: {
-		responsive: true
-	}
+	        datasets: [
+			  {
+		        label: 'Systolic',
+		        data: {{ data.data_s | safe }},
+				fill: false,
+				borderColor: 'rgb(255,128,0)'
+			  },
+			  {
+		        label: 'Diastolic',
+		        data: {{ data.data_d | safe }},
+				fill: false,
+				borderColor: 'rgb(0,128,255)'
+			  }
+			]
+		}
 	});
 </script>
 

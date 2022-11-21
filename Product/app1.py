@@ -57,7 +57,7 @@ db = SQLAlchemy(app)
 #  GET, POST   | /result/delete/<id>    | delete_result(id)
 
 
-# ============================================================ # 
+# ============================================================ #
 
 # -------------+------------------------+----------------------
 #  GET, POST   | /login                 | login_user()
@@ -86,11 +86,21 @@ def benchmark():
         message = 'You do not have access permission.'
         abort(401, message)
 
-    
     # Get specific user's results based on category ID
-    results = db.session.query(Result).filter((Result.user_id == session['user_id'] )) #""and Result.morning == 1""
 
-    #for result in results:
+    results = db.session.query(Result).filter(Result.user_id == session['user_id'])  # all results
+
+    """
+    resultsDay = db.session.query(Result).filter(
+        (Result.user_id == session['user_id']),
+        (Result.daytime == 1))  # ""and Result.morning == 1""
+
+    resultsNight = db.session.query(Result).filter(
+        (Result.user_id == session['user_id']),
+        (Result.daytime == 0))  # ""and Result.night == 1""
+    """
+
+    # for result in results:
     #    result.BMI = round(float(result.weight) / float(result.height) ** 2, 1)
 
     if results.count() == 0:
@@ -107,17 +117,17 @@ def benchmark():
             labels.append(str(result.date.strftime('%d. %m. %Y')))
             data_s.append(result.systolic)
             data_d.append(result.diastolic)
-#this line above puts the height in the y axis instead of showing the bmi on the y axis
+# this line above puts the height in the y axis instead of showing the bmi on the y axis
     # Get category title from category ID
-    #title = get_category_title_from_id(id)
+    # title = get_category_title_from_id(id)
 
     data = {
-       # 'title': title,
-       # 'benchmark': benchmark,
+        # 'title': title,
+        # 'benchmark': benchmark,
         'results': results,
         'labels': labels,
         'data_s': data_s,
-        'data_d': data_d,
+        'data_d': data_d
     }
 
     # Display page with the results/benchmark
@@ -134,28 +144,25 @@ def add_result():
 
     # Use form
     form = AddResultForm()
-    
+
     # Process form
     if form.validate_on_submit():
-        # Handle adding data to the database
+        # Handle adding data to the database'
         if request.method == 'POST' and 'submit' in request.form:
             # Create data record
-            record = Result(
-                user_id = session['user_id'],
-                diastolic = request.form.get('diastolic'),
-                systolic = request.form.get('systolic'),
-                #bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1),
-                daytime = request.form.get('daytime'),
-                date = datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
-            )
 
-            # Save data to the database
-            db.session.add(record)
-            db.session.commit()
-
-            # Return to benchmark page
-            return redirect(url_for('benchmark'))
-
+                record = Result(
+                    user_id=session['user_id'],
+                    diastolic=request.form.get('diastolic'),
+                    systolic=request.form.get('systolic'),
+                    daytime=request.form.get('daytime'),
+                    date=datetime.strptime(request.form.get('date'), '%d. %m. %Y')
+                )
+                # Save data to the database
+                db.session.add(record)
+                db.session.commit()
+                # Return to benchmark page
+                return redirect(url_for('benchmark'))
     # Display page with the form
     return render_template('result_form.html', form=form, user=session)
 
@@ -165,14 +172,14 @@ def add_result():
 def edit_result(id):
     # Get existing record from database
     record = db.session.query(Result).get(id)
-    #print(id)
-    #print(record)
+    # print(id)
+    # print(record)
 
     # If there is no record, abort editing
     if not record:
         message = 'Result with this ID cannot be found. Either it was deleted or it did not exist in the first place.'
         abort(404, message)
-        
+
     # If user is not logged-in, abort editing
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -199,9 +206,10 @@ def edit_result(id):
             print("Processing form")
             # Update data record
             record.weight = request.form.get('weight')
-            
+
             #record.bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1)
-            record.date = datetime.strptime(request.form.get('date'), '%d. %m. %Y')
+            record.date = datetime.strptime(
+                request.form.get('date'), '%d. %m. %Y')
 
             # Save data to the database
             db.session.commit()
@@ -223,7 +231,7 @@ def delete_result(id):
     if not record:
         message = 'Result with this ID cannot be found. Either it was deleted or it did not exist in the first place.'
         abort(404, message)
-        
+
     # If user is not logged-in, abort deleting
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -254,6 +262,8 @@ def delete_result(id):
 
 # Add benchmark to the database
 ###########################################################
+
+
 @app.route('/benchmark/add', methods=['GET', 'POST'])
 def add_benchmark():
     # If user is not logged-in, abort adding
@@ -263,18 +273,18 @@ def add_benchmark():
 
     # Use form
     form = AddBenchmarkForm()
-    
+
     # Process form
     if form.validate_on_submit():
         # Handle adding data to the database
         if request.method == 'POST' and 'submit' in request.form:
             # Create data record
             record = Benchmark(
-                user_id = session['user_id'],
-                type = int(request.form.get('type')),
-                category = int(request.form.get('category')),
-                result = request.form.get('result'),
-                date = datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
+                user_id=session['user_id'],
+                type=int(request.form.get('type')),
+                category=int(request.form.get('category')),
+                result=request.form.get('result'),
+                date=datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
             )
 
             # Save data to the database
@@ -288,6 +298,8 @@ def add_benchmark():
     return render_template('benchmark_form.html', form=form, user=session)
 
 # Edit benchmark in the database
+
+
 @app.route('/benchmark/edit/<id>', methods=['GET', 'POST'])
 def edit_benchmark(id):
     # Get existing record from database
@@ -297,7 +309,7 @@ def edit_benchmark(id):
     if not record:
         message = 'Benchmark with this ID cannot be found. Either it was deleted or it did not exist in the first place.'
         abort(404, message)
-        
+
     # If user is not logged-in, abort editing
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -324,7 +336,8 @@ def edit_benchmark(id):
             record.type = int(request.form.get('type'))
             record.category = int(request.form.get('category'))
             record.result = request.form.get('result')
-            record.date = datetime.strptime(request.form.get('date'), '%d. %m. %Y')
+            record.date = datetime.strptime(
+                request.form.get('date'), '%d. %m. %Y')
 
             # Save data to the database
             db.session.commit()
@@ -346,7 +359,7 @@ def delete_benchmark(id):
     if not record:
         message = 'Benchmark with this ID cannot be found. Either it was deleted or it did not exist in the first place.'
         abort(404, message)
-        
+
     # If user is not logged-in, abort deleting
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -377,6 +390,8 @@ def delete_benchmark(id):
 ###########################################################
 
 # Login user
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
     # If user is already logged-in, abort
@@ -393,16 +408,18 @@ def login_user():
     if form.validate_on_submit():
         if request.method == 'POST' and 'submit' in request.form:
             # Get user data from the database
-            user = db.session.query(User).filter_by(username=request.form.get('username')).first()
+            user = db.session.query(User).filter_by(
+                username=request.form.get('username')).first()
 
             # Handle user login
             if user:
-                password = md5(request.form.get('password').encode('utf-8')).hexdigest()
+                password = md5(request.form.get(
+                    'password').encode('utf-8')).hexdigest()
                 if user.password.lower() == password:
                     session['firstname'] = user.firstname
                     session['lastname'] = user.lastname
                     session['username'] = user.username
-                    session['user_id']  = user.id
+                    session['user_id'] = user.id
                     session['loggedin'] = True
                     session['is_admin'] = user.is_admin
                 else:
@@ -455,7 +472,7 @@ def change_password():
     if not user:
         message = 'User with this ID cannot be found. Either it was deleted or it did not exist in the first place.'
         abort(404, message)
-        
+
     # If user is not logged-in, abort editing
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -480,7 +497,8 @@ def change_password():
                form.passnew1.data == form.passnew2.data:
 
                 # Change user password in the database
-                user.password = md5(form.passnew1.data.encode('utf-8')).hexdigest()
+                user.password = md5(
+                    form.passnew1.data.encode('utf-8')).hexdigest()
                 db.session.commit()
             else:
                 # Incorrect current password or unmatching new password
@@ -507,12 +525,14 @@ def new_account():
 
             # Create user record
             record = User(
-                firstname = request.form.get('firstname'),
-                lastname = request.form.get('lastname'),
-                username = request.form.get('username'),
-                password = md5(request.form.get('password').encode('utf-8')).hexdigest(),
-                birth_date = datetime.strptime(request.form.get('birth_date'), '%d. %m. %Y'),
-                is_admin = False
+                firstname=request.form.get('firstname'),
+                lastname=request.form.get('lastname'),
+                username=request.form.get('username'),
+                password=md5(request.form.get(
+                    'password').encode('utf-8')).hexdigest(),
+                birth_date=datetime.strptime(
+                    request.form.get('birth_date'), '%d. %m. %Y'),
+                is_admin=False
             )
             try:
                 # Try saving user to the database
@@ -557,12 +577,14 @@ def add_user():
 
             # Create user record
             record = User(
-                firstname = request.form.get('firstname'),
-                lastname = request.form.get('lastname'),
-                username = request.form.get('username'),
-                password = md5(request.form.get('password').encode('utf-8')).hexdigest(),
-                birth_date = datetime.strptime(request.form.get('birth_date'), '%d. %m. %Y'),
-                is_admin = request.form.get('is_admin')
+                firstname=request.form.get('firstname'),
+                lastname=request.form.get('lastname'),
+                username=request.form.get('username'),
+                password=md5(request.form.get(
+                    'password').encode('utf-8')).hexdigest(),
+                birth_date=datetime.strptime(
+                    request.form.get('birth_date'), '%d. %m. %Y'),
+                is_admin=request.form.get('is_admin')
             )
             try:
                 # Try saving user to the database
@@ -593,7 +615,7 @@ def edit_user(id):
     if not record:
         message = 'User with this ID cannot be found. Either it was deleted or it did not exist in the first place.'
         abort(404, message)
-        
+
     # If user is not logged-in, abort editing
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -628,8 +650,10 @@ def edit_user(id):
             # Password can be changed using separate form
             record.firstname = request.form.get('firstname')
             record.lastname = request.form.get('lastname')
-            record.birth_date = datetime.strptime(request.form.get('birth_date'), '%d. %m. %Y')
-            record.is_admin = True if request.form.get('is_admin') == 'y' else False
+            record.birth_date = datetime.strptime(
+                request.form.get('birth_date'), '%d. %m. %Y')
+            record.is_admin = True if request.form.get(
+                'is_admin') == 'y' else False
 
             # Save data to the database
             db.session.commit()
@@ -651,7 +675,7 @@ def delete_user(id):
     if not record:
         message = 'User with this ID cannot be found. Either it was deleted or it did not exist in the first place.'
         abort(404, message)
-        
+
     # If user is not logged-in, abort editing
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -722,8 +746,6 @@ def handle_error(error):
     return render_template('error.html', error=error, user=session), error.code
 
 
-
-
 # Function to get available benchmarks
 def get_benchmarks():
     # Maybe later we can save benchmarks to the database
@@ -734,7 +756,7 @@ def get_benchmarks():
         (5, 'Personal Best'),
         (6, 'Season Best'),
     ]
-    
+
     # Admins can add all benchmarks
     if session and ('is_admin' in session.keys() and session['is_admin'] == True):
         benchmarks = [
@@ -756,17 +778,19 @@ class AddResultForm(FlaskForm):
     title = 'Add result'
     systolic = StringField(
         'Systolic',
-        validators = [DataRequired('You must provide your systolic blood pressure reading.')],
-        render_kw = {'placeholder': 'Systolic'}
+        validators=[DataRequired(
+            'You must provide your systolic blood pressure reading.')],
+        render_kw={'placeholder': 'Systolic'}
     )
     diastolic = StringField(
         'Diastolic',
-        validators = [DataRequired('You must provide your diastolic blood pressure reading.')],
-        render_kw = {'placeholder': 'Diastolic'}
+        validators=[DataRequired(
+            'You must provide your diastolic blood pressure reading.')],
+        render_kw={'placeholder': 'Diastolic'}
     )
     daytime = BooleanField(
         'daytime',
-        render_kw = {
+        render_kw={
             'data-toggle': 'toggle',
             'data-size': 's',  # Extra small
             'data-on': 'Morning',
@@ -777,10 +801,10 @@ class AddResultForm(FlaskForm):
     )
     date = StringField(
         'Date of measuring',
-        render_kw = {
+        render_kw={
             'data-provide': 'datepicker'
         },
-        validators = [DataRequired('You must provide a date.')]
+        validators=[DataRequired('You must provide a date.')]
     )
     submit = SubmitField('Create')
 
@@ -789,20 +813,20 @@ class AddResultForm(FlaskForm):
 class EditResultForm(FlaskForm):
     title = 'Edit result'
     diastolic = StringField(
-        'Diastolic', #previously said weight in kg
-        validators = [DataRequired('You must provide event name.')]
-      #  choices = get_categories(),
+        'Diastolic',  # previously said weight in kg
+        validators=[DataRequired('You must provide event name.')]
+        #  choices = get_categories(),
         # Make sure that values are integers,otherwise
         # form validation will not validate the form.
-        
+
     )
     systolic = StringField(
-        'Systolic', # previsouly said heigt in metres
-        validators = [DataRequired('You must provide event name.')]
+        'Systolic',  # previsouly said heigt in metres
+        validators=[DataRequired('You must provide event name.')]
     )
     date = StringField(
         'Date of measuring',
-        validators = [DataRequired('You must provide event date.')]
+        validators=[DataRequired('You must provide event date.')]
     )
     submit = SubmitField('Update')
 
@@ -819,25 +843,25 @@ class AddBenchmarkForm(FlaskForm):
     title = 'Add benchmark'
     type = SelectField(
         'Benchmark type',
-        choices = get_benchmarks(),
+        choices=get_benchmarks(),
         # Make sure that values are integers,otherwise
         # form validation will not validate the form.
-        coerce = int
+        coerce=int
     )
     category = SelectField(
         'Category',
-       # choices = get_categories(),
+        # choices = get_categories(),
         # Make sure that values are integers,otherwise
         # form validation will not validate the form.
-        coerce = int
+        coerce=int
     )
     date = StringField(
         'Benchmark date',
-        validators = [DataRequired('You must provide benchmark date.')]
+        validators=[DataRequired('You must provide benchmark date.')]
     )
     result = StringField(
         'Benchmark result',
-        validators = [DataRequired('You must provide benchmark result.')]
+        validators=[DataRequired('You must provide benchmark result.')]
     )
     submit = SubmitField('Create')
 
@@ -847,25 +871,25 @@ class EditBenchmarkForm(FlaskForm):
     title = 'Edit benchmark'
     type = SelectField(
         'Benchmark type',
-        choices = get_benchmarks(),
+        choices=get_benchmarks(),
         # Make sure that values are integers,otherwise
         # form validation will not validate the form.
-        coerce = int
+        coerce=int
     )
     category = SelectField(
         'Category',
-       # choices = get_categories(),
+        # choices = get_categories(),
         # Make sure that values are integers,otherwise
         # form validation will not validate the form.
-        coerce = int
+        coerce=int
     )
     date = StringField(
         'Benchmark date',
-        validators = [DataRequired('You must provide benchmark date.')]
+        validators=[DataRequired('You must provide benchmark date.')]
     )
     result = StringField(
         'Benchmark result',
-        validators = [DataRequired('You must provide benchmark result.')]
+        validators=[DataRequired('You must provide benchmark result.')]
     )
     submit = SubmitField('Update')
 
@@ -882,11 +906,11 @@ class LoginForm(FlaskForm):
     title = 'Sign in'
     username = StringField(
         'Username',
-        validators = [DataRequired('You must provide username to sign in!')]
+        validators=[DataRequired('You must provide username to sign in!')]
     )
     password = PasswordField(
         'Password',
-        validators = [
+        validators=[
             DataRequired('You must provide password to sign in!'),
             Length(5, 20, 'Your password is either too short or too long!')
         ],
@@ -908,14 +932,14 @@ class ChangePasswordForm(FlaskForm):
     message = 'To change your password first enter your current password and then enter your new password twice.'
     password = PasswordField(
         'Current password',
-        validators = [
+        validators=[
             DataRequired('You must provide password.'),
             Length(5, 20, 'The password is either too short or too long.')
         ],
     )
     passnew1 = PasswordField(
         'New password',
-        validators = [
+        validators=[
             DataRequired('You must provide password.'),
             Length(5, 20, 'The password is either too short or too long.')
         ],
@@ -923,7 +947,7 @@ class ChangePasswordForm(FlaskForm):
     )
     passnew2 = PasswordField(
         'New password again',
-        validators = [
+        validators=[
             DataRequired('You must provide password.'),
             Length(5, 20, 'The password is either too short or too long.')
         ],
@@ -937,19 +961,19 @@ class NewAccountForm(FlaskForm):
     register = True
     firstname = StringField(
         'First name',
-        validators = [DataRequired('You must provide first name.')]
+        validators=[DataRequired('You must provide first name.')]
     )
     lastname = StringField(
         'Last name',
-        validators = [DataRequired('You must provide last name.')]
+        validators=[DataRequired('You must provide last name.')]
     )
     username = StringField(
         'Username',
-        validators = [DataRequired('You must provide username.')]
+        validators=[DataRequired('You must provide username.')]
     )
     password = PasswordField(
         'Password',
-        validators = [
+        validators=[
             DataRequired('You must provide password.'),
             Length(5, 20, 'The password is either too short or too long.')
         ],
@@ -957,7 +981,7 @@ class NewAccountForm(FlaskForm):
     )
     birth_date = StringField(
         'Birth date',
-        validators = [DataRequired('You must provide birth date.')]
+        validators=[DataRequired('You must provide birth date.')]
     )
     submit = SubmitField('Create')
 
@@ -967,19 +991,19 @@ class AddUserForm(FlaskForm):
     title = 'Add user'
     firstname = StringField(
         'First name',
-        validators = [DataRequired('You must provide first name.')]
+        validators=[DataRequired('You must provide first name.')]
     )
     lastname = StringField(
         'Last name',
-        validators = [DataRequired('You must provide last name.')]
+        validators=[DataRequired('You must provide last name.')]
     )
     username = StringField(
         'Username',
-        validators = [DataRequired('You must provide username.')]
+        validators=[DataRequired('You must provide username.')]
     )
     password = PasswordField(
         'Password',
-        validators = [
+        validators=[
             DataRequired('You must provide password.'),
             Length(5, 20, 'The password is either too short or too long.')
         ],
@@ -987,11 +1011,11 @@ class AddUserForm(FlaskForm):
     )
     birth_date = StringField(
         'Birth date',
-        validators = [DataRequired('You must provide birth date.')]
+        validators=[DataRequired('You must provide birth date.')]
     )
     is_admin = BooleanField(
         'Admin rights?',
-        render_kw = {
+        render_kw={
             'data-toggle': 'toggle',
             'data-size': 'xs',  # Extra small
             'data-on': 'Yes',
@@ -1008,26 +1032,26 @@ class EditUserForm(FlaskForm):
     title = 'Edit user'
     firstname = StringField(
         'First name',
-        validators = [DataRequired('You must provide first name.')]
+        validators=[DataRequired('You must provide first name.')]
     )
     lastname = StringField(
         'Last name',
-        validators = [DataRequired('You must provide last name.')]
+        validators=[DataRequired('You must provide last name.')]
     )
     # Username must be disabled, so it cannot be changed in order to stay unique.
     username = StringField(
         'Username',
-        render_kw = {
+        render_kw={
             'disabled': 'disabled'
         }
     )
     birth_date = StringField(
         'Birth date',
-        validators = [DataRequired('You must provide birth date.')]
+        validators=[DataRequired('You must provide birth date.')]
     )
     is_admin = BooleanField(
         'Admin rights?',
-        render_kw = {
+        render_kw={
             'data-toggle': 'toggle',
             'data-size': 'xs',  # Extra small
             'data-on': 'Yes',
@@ -1047,40 +1071,28 @@ class DeleteUserForm(FlaskForm):
 
 
 # ========== Create database models ========== #
-#
-# ┌──────────────────────┐   ┌─────────────────────────┐   ┌──────────────────────┐
-# │    benchmark         │   │    user                 │   │    result            │
-# ├──┬───────────────────┤   ├──┬──────────────────────┤   ├──┬───────────────────┤
-# │PK│ id: integer       │ ┌-│PK│ id: integer          │-┐ │PK│ id: integer       │
-# ├──┼───────────────────┤ │ ├──┼──────────────────────┤ │ ├──┼───────────────────┤
-# │FK│ user_id: integer  │>┘ │  │ firstname: string    │ └<│FK│ user_id: integer  │
-# │  │ type: integer     │   │  │ lastname: string     │   │  │ category: integer │
-# │  │                   │   │ U│ username: string     │   │  │ event: string     │
-# │  │ date: datetime    │   │  │ password: string     │   │  │ date: datetime    │
-# │  │ result: string    │   │  │ birth_date: datetime │   │  │ result: string    │
-# └──┴───────────────────┘   │  │ is_admin: boolean    │   └──┴───────────────────┘
-#                            └──┴──────────────────────┘
-#
 
 # Database model for User entity
 class User(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, nullable=False,
+                   primary_key=True, autoincrement=True)
     firstname = db.Column(db.String, nullable=False)
     lastname = db.Column(db.String, nullable=False)
     username = db.Column(db.String, nullable=False, unique=True)
-    password = db.Column(db.String, nullable=False) # Don't forget to MD5 encode it!
+    # Don't forget to MD5 encode it!
+    password = db.Column(db.String, nullable=False)
     birth_date = db.Column(db.DateTime, nullable=False)
-    is_admin = db.Column(db.Boolean, default=False) 
-    
+    is_admin = db.Column(db.Boolean, default=False)
+
     def __init__(self, firstname, lastname, username, password, birth_date, is_admin=False):
-        self.firstname  = firstname
-        self.lastname   = lastname
-        self.username   = username
-        self.password   = password
+        self.firstname = firstname
+        self.lastname = lastname
+        self.username = username
+        self.password = password
         self.birth_date = birth_date
-        self.is_admin   = is_admin
-    
+        self.is_admin = is_admin
+
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -1088,11 +1100,12 @@ class User(db.Model):
 # Database model for Result entity
 class Result(db.Model):
     __tablename__ = 'result'
-    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, nullable=False,
+                   primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     diastolic = db.Column(db.String, nullable=False)
     systolic = db.Column(db.String, nullable=False)
-    daytime = db.Column(db.String, nullable=True)
+    daytime = db.Column(db.Integer, nullable=False, default=0)
     date = db.Column(db.DateTime, nullable=False)
     # Relationship
     user = db.relationship('User')
@@ -1103,7 +1116,7 @@ class Result(db.Model):
 #       self.height   = height
 #       self.bmi      = round(float(weight) / float(height) ** 2, 1)
 #       self.date     = date
-#   
+#
 #   def __repr__(self):
 #       return '<Result %r>' % self.weight
 
@@ -1111,7 +1124,8 @@ class Result(db.Model):
 # Database model for Benchmark entity
 class Benchmark(db.Model):
     __tablename__ = 'benchmark'
-    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, nullable=False,
+                   primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     type = db.Column(db.Integer, default=0)
     category = db.Column(db.Integer, default=0)
@@ -1121,12 +1135,12 @@ class Benchmark(db.Model):
     user = db.relationship('User')
 
     def __init__(self, user_id, type, category, result, date):
-        self.user_id  = user_id
-        self.type     = type
+        self.user_id = user_id
+        self.type = type
         self.category = category
-        self.result   = result
-        self.date     = date
-    
+        self.result = result
+        self.date = date
+
     def __repr__(self):
         return '<Benchmark %r>' % self.type
 
@@ -1144,12 +1158,12 @@ with app.app_context():
     # Add 'admin' user to the database if there are no users
     if not exists:
         admin = User(
-            firstname  = 'Admin',
-            lastname   = 'User',
-            username   = 'admin',
-            password   = md5('admin'.encode('utf-8')).hexdigest(),
-            birth_date = datetime.now(),
-            is_admin   = True
+            firstname='Admin',
+            lastname='User',
+            username='admin',
+            password=md5('admin'.encode('utf-8')).hexdigest(),
+            birth_date=datetime.now(),
+            is_admin=True
         )
         db.session.add(admin)
         db.session.commit()
@@ -1160,4 +1174,3 @@ with app.app_context():
 # Run the web server
 if __name__ == '__main__':
     app.run(debug=True)
-

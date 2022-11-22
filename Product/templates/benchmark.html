@@ -16,9 +16,9 @@
 		<div class="col-6">
 			<!-- Left column (wide) start -->
 			<div class="card mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Results</h5>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Results Morning</h5>
 				<div class="card-body">
-					{% if data.results %}
+					{% if data.results_d %}
 					<table class="table">
 						<thead class="thead-light">
 							<tr>
@@ -30,7 +30,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% for item in data.results %}
+							{% for item in data.results_d %}
 							<tr>
 								<td>{{ item.systolic }}</td>
 								<td>{{ item.diastolic }}</td>
@@ -52,6 +52,46 @@
 						<a href="/result/add"><i class="fa-solid fa-plus"></i>New result</a>
 					</div>
 				</div>
+				
+			</div>
+			<div class="card mx-auto">
+				<h5 class="card-header text-white bg=class= custom-gradient1">Results Night</h5>
+				<div class="card-body">
+					{% if data.results_n %}
+					<table class="table">
+						<thead class="thead-light">
+							<tr>
+								<th>Systolic</th>
+								<th>Diastolic</th>
+								<th>Time</th>
+								<th>Date</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for item in data.results_n %}
+							<tr>
+								<td>{{ item.systolic }}</td>
+								<td>{{ item.diastolic }}</td>
+								<td>{{item.daytime}}</td>
+								<td>{{ item.date.strftime('%d. %m. %Y') }}</td>
+								<td>
+									<a href="/result/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
+									<a href="/result/delete/{{ item.id }}" class="text-danger"><i
+											class="fa-solid fa-trash"></i></a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					{% else %}
+					<div>No results to display.</div>
+					{% endif %}
+					<div>
+						<a href="/result/add"><i class="fa-solid fa-plus"></i>New result</a>
+					</div>
+				</div>
+				
 			</div>
 			<!-- Left column (wide) end -->
 		</div>
@@ -70,9 +110,13 @@
 			</div>
 
 			<div class="card my-4 mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time</h5>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Morning)</h5> <!--title for the graph-->
 				<div class="card-body">
 					<canvas id="myChart" width="400" height="180"></canvas>
+				</div>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Night)</h5> 
+				<div class="card-body">
+					<canvas id="myChart2" width="400" height="180"></canvas>
 				</div>
 			</div>
 		</div>
@@ -82,21 +126,42 @@
 
 {% block javascript %}
 <script>
-	var ctxL = document.getElementById("myChart").getContext('2d');
-	var myLineChart = new Chart(ctxL, {
-		type: 'bar',
+	let ctxL = document.getElementById("myChart").getContext('2d');
+	let myLineChart = new Chart(ctxL, {
+		type: 'line',
 		data: {
-			labels: {{ data.labels | safe }},
+			labels: {{ data.labels_d | safe }},
 	        datasets: [
 			  {
 		        label: 'Systolic',
-		        data: {{ data.data_s | safe }},
+		        data: {{ data.data_s_d | safe }},
 				fill: false,
 				borderColor: 'rgb(255,128,0)'
 			  },
 			  {
 		        label: 'Diastolic',
-		        data: {{ data.data_d | safe }},
+		        data: {{ data.data_d_d | safe }},
+				fill: false,
+				borderColor: 'rgb(0,128,255)'
+			  }
+			]
+		}
+	});
+	let ctxL2 = document.getElementById("myChart2").getContext('2d');
+	let myLineChart2 = new Chart(ctxL2, {
+		type: 'line',
+		data: {
+			labels: {{ data.labels_n | safe }},
+	        datasets: [
+			  {
+		        label: 'Systolic',
+		        data: {{ data.data_s_n | safe }},
+				fill: false,
+				borderColor: 'rgb(255,128,0)'
+			  },
+			  {
+		        label: 'Diastolic',
+		        data: {{ data.data_d_n | safe }},
 				fill: false,
 				borderColor: 'rgb(0,128,255)'
 			  }

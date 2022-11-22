@@ -88,8 +88,10 @@ def benchmark():
 
     # Get specific user's results based on category ID
 
-    results = db.session.query(Result).filter(Result.user_id == session['user_id'])  # all results
-
+    results = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 0)  # all results
+    results1 = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 'y')
+    
+       
     """
     resultsDay = db.session.query(Result).filter(
         (Result.user_id == session['user_id']),
@@ -105,18 +107,32 @@ def benchmark():
 
     if results.count() == 0:
         results = None
-        labels = None
-        data_s = None
-        data_d = None
+        labels_d = None
+        data_s_d = None
+        data_d_d= None
     else:
         # Format data to be used in graph
-        labels = []
-        data_s = []
-        data_d = []
+        labels_d = []
+        data_s_d = []
+        data_d_d = []
         for result in results:
-            labels.append(str(result.date.strftime('%d. %m. %Y')))
-            data_s.append(result.systolic)
-            data_d.append(result.diastolic)
+            labels_d.append(str(result.date.strftime('%d. %m. %Y')))
+            data_s_d.append(result.systolic)
+            data_d_d.append(result.diastolic)
+    if results1.count() == 0:
+        results1 = None
+        labels_n = None
+        data_s_n= None
+        data_d_n = None
+    else:
+        # Format data to be used in graph
+        labels_n = []
+        data_s_n = []
+        data_d_n= []
+        for result in results1:
+            labels_n.append(str(result.date.strftime('%d. %m. %Y')))
+            data_s_n.append(result.systolic)
+            data_d_n.append(result.diastolic)
 # this line above puts the height in the y axis instead of showing the bmi on the y axis
     # Get category title from category ID
     # title = get_category_title_from_id(id)
@@ -124,11 +140,16 @@ def benchmark():
     data = {
         # 'title': title,
         # 'benchmark': benchmark,
-        'results': results,
-        'labels': labels,
-        'data_s': data_s,
-        'data_d': data_d
+        'results_d': results,
+        'labels_d': labels_d,
+        'data_s_d': data_s_d,
+        'data_d_d': data_d_d,
+        'results_n': results1,
+        'labels_n': labels_n,
+        'data_s_n': data_s_n,
+        'data_d_n': data_d_n
     }
+    
 
     # Display page with the results/benchmark
     return render_template('benchmark.html', data=data, user=session)

@@ -88,19 +88,10 @@ def benchmark():
 
     # Get specific user's results based on category ID
 
-    results = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 0)  # all results
-    results1 = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 'y')
+    results1 = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 0)  # all results
+    results = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 1)
     
-       
-    """
-    resultsDay = db.session.query(Result).filter(
-        (Result.user_id == session['user_id']),
-        (Result.daytime == 1))  # ""and Result.morning == 1""
 
-    resultsNight = db.session.query(Result).filter(
-        (Result.user_id == session['user_id']),
-        (Result.daytime == 0))  # ""and Result.night == 1""
-    """
 
     # for result in results:
     #    result.BMI = round(float(result.weight) / float(result.height) ** 2, 1)
@@ -173,11 +164,11 @@ def add_result():
             # Create data record
 
                 record = Result(
-                    user_id=session['user_id'],
-                    diastolic=request.form.get('diastolic'),
-                    systolic=request.form.get('systolic'),
-                    daytime=request.form.get('daytime'),
-                    date=datetime.strptime(request.form.get('date'), '%d. %m. %Y')
+                    user_id = session['user_id'],
+                    diastolic = request.form.get('diastolic'),
+                    systolic = request.form.get('systolic'),
+                    daytime = 0 if request.form.get('daytime') == None else 1,
+                    date = datetime.strptime(request.form.get('date'), '%d. %m. %Y')
                 )
                 # Save data to the database
                 db.session.add(record)
@@ -226,9 +217,9 @@ def edit_result(id):
         if request.method == 'POST' and 'submit' in request.form:
             print("Processing form")
             # Update data record
-            record.weight = request.form.get('weight')
-
-            #record.bmi    = round(float(request.form.get('weight')) / float(request.form.get('height')) ** 2, 1)
+            record.diastolic = request.form.get('diastolic')
+            record.systolic = request.form.get('systolic')
+            record.daytime = 0 if request.form.get('daytime') == None else 1
             record.date = datetime.strptime(
                 request.form.get('date'), '%d. %m. %Y')
 
@@ -303,7 +294,7 @@ def add_benchmark():
             record = Benchmark(
                 user_id=session['user_id'],
                 type=int(request.form.get('type')),
-                category=int(request.form.get('category')),
+                # category=int(request.form.get('category')), "not needed?"
                 result=request.form.get('result'),
                 date=datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
             )
@@ -359,6 +350,7 @@ def edit_benchmark(id):
             record.result = request.form.get('result')
             record.date = datetime.strptime(
                 request.form.get('date'), '%d. %m. %Y')
+            record.daytime= (request.form.get('daytime'))
 
             # Save data to the database
             db.session.commit()
@@ -810,7 +802,7 @@ class AddResultForm(FlaskForm):
         render_kw={'placeholder': 'Diastolic'}
     )
     daytime = BooleanField(
-        'daytime',
+        'Daytime',
         render_kw={
             'data-toggle': 'toggle',
             'data-size': 's',  # Extra small
@@ -834,20 +826,31 @@ class AddResultForm(FlaskForm):
 class EditResultForm(FlaskForm):
     title = 'Edit result'
     diastolic = StringField(
-        'Diastolic',  # previously said weight in kg
-        validators=[DataRequired('You must provide event name.')]
+        'Diastolic',  # previously said diastolic measurement
+        validators=[DataRequired('You must provide a new systolic blood measurement.')]
         #  choices = get_categories(),
         # Make sure that values are integers,otherwise
         # form validation will not validate the form.
 
     )
     systolic = StringField(
-        'Systolic',  # previsouly said heigt in metres
-        validators=[DataRequired('You must provide event name.')]
+        'Systolic',  # previsouly said systolic measurement
+        validators=[DataRequired('You must provide a new systolic blood measurement.')]
     )
     date = StringField(
         'Date of measuring',
         validators=[DataRequired('You must provide event date.')]
+    )
+    daytime = BooleanField(
+        'Daytime',
+        render_kw={
+            'data-toggle': 'toggle',
+            'data-size': 's',  # Extra small
+            'data-on': 'Morning',
+            'data-off': 'Night',
+            'data-onstyle': 'warning',
+            'data-offstyle': 'dark'
+        }
     )
     submit = SubmitField('Update')
 

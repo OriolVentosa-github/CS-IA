@@ -79,8 +79,8 @@ def index():
 
 
 # Display user's results and benchmark
-@app.route('/benchmark')
-def benchmark():
+@app.route('/tracker')
+def tracker():
     # If user is not logged-in, abort viewing
     if not session or session['loggedin'] == False:
         message = 'You do not have access permission.'
@@ -88,8 +88,8 @@ def benchmark():
 
     # Get specific user's results based on category ID
 
-    results1 = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 0)  # all results
-    results = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 1)
+    results1 = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 0).order_by(Result.date.desc())  # all results
+    results = db.session.query(Result).filter(Result.user_id == session['user_id'], Result.daytime == 1).order_by(Result.date.desc())
     
 
 
@@ -174,7 +174,7 @@ def add_result():
                 db.session.add(record)
                 db.session.commit()
                 # Return to benchmark page
-                return redirect(url_for('benchmark'))
+                return redirect(url_for('tracker'))
     # Display page with the form
     return render_template('result_form.html', form=form, user=session)
 
@@ -227,7 +227,7 @@ def edit_result(id):
             db.session.commit()
 
             # Return to benchmark page
-            return redirect(url_for('benchmark'))
+            return redirect(url_for('tracker'))
 
     # Display page with the form
     return render_template('result_form.html', form=form, user=session)
@@ -267,7 +267,7 @@ def delete_result(id):
             db.session.commit()
 
             # Return to benchmark page
-            return redirect(url_for('benchmark'))
+            return redirect(url_for('tracker'))
 
     # Display page with the form
     return render_template('remove_form.html', form=form, user=session)
@@ -275,8 +275,8 @@ def delete_result(id):
 # Add benchmark to the database
 ###########################################################
 
-
-@app.route('/benchmark/add', methods=['GET', 'POST'])
+"""
+@app.route('/tracker/add', methods=['GET', 'POST'])
 def add_benchmark():
     # If user is not logged-in, abort adding
     if not session or session['loggedin'] == False:
@@ -305,14 +305,14 @@ def add_benchmark():
 
             # Return to benchmark page
             return redirect(url_for('results'))
-
+"
     # Display page with the form
     return render_template('benchmark_form.html', form=form, user=session)
-
+"""
 # Edit benchmark in the database
 
 
-@app.route('/benchmark/edit/<id>', methods=['GET', 'POST'])
+@app.route('/tracker/edit/<id>', methods=['GET', 'POST'])
 def edit_benchmark(id):
     # Get existing record from database
     record = db.session.query(Benchmark).get(id)
@@ -363,7 +363,7 @@ def edit_benchmark(id):
 
 
 # Delete benchmark from the database
-@app.route('/benchmark/delete/<id>', methods=['GET', 'POST'])
+@app.route('/tracker/delete/<id>', methods=['GET', 'POST'])
 def delete_benchmark(id):
     # Get existing record from database
     record = db.session.query(Benchmark).get(id)

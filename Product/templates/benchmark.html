@@ -6,16 +6,19 @@
 {%endblock %}
 
 {% block content %}
-<div class="container">
-	<div class="row my-0">
-		<div class="col-12">
-			<h2>{{ data.title }}</h2>
-		</div>
-	</div>
-	<div class="row my-5">
-		<div class="col-6">
+<div class="container-fluid">
+	<div class="row my-4">
+		<div class="col-sm">
+			<div class="card mx-auto">
+				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Morning)
+				</h5>
+				<!--title for the graph-->
+				<div class="card-body">
+					<canvas id="myChart" width="400" height="180"></canvas>
+				</div>
+			</div>
 			<!-- Left column (wide) start -->
-			<div class="card my-0 mx-auto">
+			<div class="card my-4 mx-auto">
 				<h5 class="card-header text-white bg=class= custom-gradient1">Results Morning</h5>
 				<div class="card-body">
 					{% if data.results_d %}
@@ -52,18 +55,30 @@
 				</div>
 
 			</div>
+		</div>
+		<div class="col-sm">
+			<div class="card mx-auto">
+				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Night)</h5>
+				<div class="card-body">
+					<canvas id="myChart2" width="400" height="180"></canvas>
+				</div>
+			</div>
 			<div class="card my-4 mx-auto">
 				<h5 class="card-header text-white bg=class= custom-gradient1">Results Night</h5>
-				
 				<div class="card-body">
+					<div>
+						<a class="btn btn-primary" role="button" href="/result/add"><i class="fa-solid fa-plus"></i>New
+							result</a>
+					</div>
 					{% if data.results_n %}
-					<table class="table">
+					<table class="table my-2">
 						<thead class="thead-light">
 							<tr>
 								<th>Systolic</th>
 								<th>Diastolic</th>
 								<th>Date</th>
-								<th></th> <!-- this line is added because otherwise the tables that list the results will not have the top grey bar extend over all of them making it look bad-->
+								<th></th>
+								<!-- this line is added because otherwise the tables that list the results will not have the top grey bar extend over all of them making it look bad-->
 							</tr>
 						</thead>
 						<tbody>
@@ -85,34 +100,17 @@
 					{% else %}
 					<div>No results to display.</div>
 					{% endif %}
-					<div>
-						<a href="/result/add"><i class="fa-solid fa-plus"></i>New result</a>
-					</div>
 				</div>
-				
+
 			</div>
 			<!-- Left column (wide) end -->
 		</div>
-		<div class="col-5">
-
+		<div class="col">
 			<div class="card mx-auto">
 				<h5 class="card-header text-white bg=class= custom-gradient1">Blood pressure range</h5>
 				<div class="card-body">
 					<img class="d-block w-100" src="{{ url_for('static', filename='pictures/nice4.jpg') }}"
 						alt="blood pressure range graph">
-				</div>
-			</div>
-
-			<div class="card my-4 mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Morning)</h5> <!--title for the graph-->
-				<div class="card-body">
-					<canvas id="myChart" width="400" height="180"></canvas>
-				</div>
-			</div>
-			<div class="card my-4 mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Night)</h5> 
-				<div class="card-body">
-					<canvas id="myChart2" width="400" height="180"></canvas>
 				</div>
 			</div>
 		</div>
@@ -128,20 +126,20 @@
 		type: 'line',
 		data: {
 			labels: {{ data.labels_d | safe }},
-	        datasets: [
-			  {
-		        label: 'Systolic',
-		        data: {{ data.data_s_d | safe }},
-				fill: false,
-				borderColor: 'rgb(127,0,255)'
+	datasets: [
+		{
+			label: 'Systolic',
+			data: {{ data.data_s_d | safe }},
+		fill: false,
+		borderColor: 'rgb(127,0,255)'
 			  },
-			  {
-		        label: 'Diastolic',
-		        data: {{ data.data_d_d | safe }},
-				fill: false,
-				borderColor: 'rgb(0,128,255)'
+		{
+			label: 'Diastolic',
+			data: {{ data.data_d_d | safe }},
+		fill: false,
+		borderColor: 'rgb(0,128,255)'
 			  }
-			]
+	]
 		}
 	});
 	let ctxL2 = document.getElementById("myChart2").getContext('2d');
@@ -149,20 +147,20 @@
 		type: 'line',
 		data: {
 			labels: {{ data.labels_n | safe }},
-	        datasets: [
-			  {
-		        label: 'Systolic',
-		        data: {{ data.data_s_n | safe }},
-				fill: false,
-				borderColor: 'rgb(127,0,255)'
+	datasets: [
+		{
+			label: 'Systolic',
+			data: {{ data.data_s_n | safe }},
+		fill: false,
+		borderColor: 'rgb(127,0,255)'
 			  },
-			  {
-		        label: 'Diastolic',
-		        data: {{ data.data_d_n | safe }},
-				fill: false,
-				borderColor: 'rgb(0,128,255)'
+		{
+			label: 'Diastolic',
+			data: {{ data.data_d_n | safe }},
+		fill: false,
+		borderColor: 'rgb(0,128,255)'
 			  }
-			]
+	]
 		}
 	});
 </script>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Pressure Tracker &middot; Benchmark{% endblock %}
+{% block title %}Pressure Tracker &middot; Tracker{% endblock %}
 
 {% block style %}
 {%endblock %}
@@ -10,8 +10,7 @@
 	<div class="row my-4">
 		<div class="col-sm">
 			<div class="card mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Morning)
-				</h5>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Blood pressure over time, Morning🌞</h5>
 				<!--title for the graph-->
 				<div class="card-body">
 					<canvas id="myChart" width="400" height="180"></canvas>
@@ -19,7 +18,7 @@
 			</div>
 			<!-- Left column (wide) start -->
 			<div class="card my-4 mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Results Morning</h5>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Results Morning 🌞</h5>
 				<div class="card-body">
 					{% if data.results_d %}
 					<table class="table">
@@ -49,29 +48,24 @@
 					{% else %}
 					<div>No results to display.</div>
 					{% endif %}
-					<div>
-						<a href="/result/add"><i class="fa-solid fa-plus"></i>New result</a>
-					</div>
+
 				</div>
 
 			</div>
 		</div>
 		<div class="col-sm">
+			
 			<div class="card mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Your blood pressure over time (Night)</h5>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Blood pressure over time, Night🌚</h5>
 				<div class="card-body">
 					<canvas id="myChart2" width="400" height="180"></canvas>
 				</div>
 			</div>
 			<div class="card my-4 mx-auto">
-				<h5 class="card-header text-white bg=class= custom-gradient1">Results Night</h5>
+				<h5 class="card-header text-white bg=class= custom-gradient1">Results Night🌚</h5>
 				<div class="card-body">
-					<div>
-						<a class="btn btn-primary" role="button" href="/result/add"><i class="fa-solid fa-plus"></i>New
-							result</a>
-					</div>
 					{% if data.results_n %}
-					<table class="table my-2">
+					<table class="table my-0">
 						<thead class="thead-light">
 							<tr>
 								<th>Systolic</th>
@@ -100,12 +94,17 @@
 					{% else %}
 					<div>No results to display.</div>
 					{% endif %}
+					
 				</div>
 
 			</div>
 			<!-- Left column (wide) end -->
 		</div>
-		<div class="col">
+		<div class="col my-0 ">
+			<div class="col my-3">
+				<a class="btn btn-primary" role="button" href="/result/add"><i class="fa-solid fa-plus"></i>New result</a>
+			</div>
+
 			<div class="card mx-auto">
 				<h5 class="card-header text-white bg=class= custom-gradient1">Blood pressure range</h5>
 				<div class="card-body">
@@ -125,17 +124,17 @@
 	let myLineChart = new Chart(ctxL, {
 		type: 'line',
 		data: {
-			labels: {{ data.labels_d | safe }},
+			labels: {{ data.labels_d | safe }}.reverse(),
 	datasets: [
 		{
 			label: 'Systolic',
-			data: {{ data.data_s_d | safe }},
+			data: {{ data.data_s_d | safe }}.reverse(),
 		fill: false,
 		borderColor: 'rgb(127,0,255)'
 			  },
 		{
 			label: 'Diastolic',
-			data: {{ data.data_d_d | safe }},
+			data: {{ data.data_d_d | safe }}.reverse(),
 		fill: false,
 		borderColor: 'rgb(0,128,255)'
 			  }
@@ -146,17 +145,17 @@
 	let myLineChart2 = new Chart(ctxL2, {
 		type: 'line',
 		data: {
-			labels: {{ data.labels_n | safe }},
+			labels: {{ data.labels_n | safe }}.reverse(),
 	datasets: [
 		{
 			label: 'Systolic',
-			data: {{ data.data_s_n | safe }},
+			data: {{ data.data_s_n | safe }}.reverse(),
 		fill: false,
 		borderColor: 'rgb(127,0,255)'
 			  },
 		{
 			label: 'Diastolic',
-			data: {{ data.data_d_n | safe }},
+			data: {{ data.data_d_n | safe }}.reverse(),
 		fill: false,
 		borderColor: 'rgb(0,128,255)'
 			  }

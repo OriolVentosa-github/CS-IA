@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Pressure Tracker &middot; Alert system{% endblock %}
+
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    Don't just ignore this alert!
+</div>
+	<div class="card my-5 mx-auto" style="max-width:40%">
+	  <h5 class="card-header text-light bg=class custom-gradient1"><b>ALERT! HIGH BLOOD PRESSURE</b></h5>
+	  <div class="card-body">
+	    <p>Your blood pressure has exceeded the safe parameters. Please contact your doctor immediately!</p>
+		  <b><a href="/tracker" class="btn btn-outline-secondary btn-danger text-white">Understood</a></b>
+		</form>		
+        
+	  </div>
+	</div>
+{% endblock %}

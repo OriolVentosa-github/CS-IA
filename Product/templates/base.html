@@ -16,8 +16,13 @@
 	<!-- Page specific CSS styles -->
 	<style>
 	body {
-	   background-color: #fcae56;
+	   background-color: #fcb563;
 	}
+	/* .custom-gradient3 {
+	   background: rgb(41, 118, 138);
+	   background: linear-gradient(0deg, rgb(102, 31, 31) 0%, rgb(253, 101, 101) 70%); 
+	}  
+	this is a different colour to try xd xd xd xd*/
 	.custom-gradient1 {
 	   background: rgb(221, 92, 72);
 	   background: linear-gradient(0deg, rgb(199, 64, 44) 0%, rgb(233, 48, 48) 70%);
@@ -42,7 +47,7 @@
 
 	<!-- Navigation bar start -->
 	<nav class="navbar navbar-expand-lg navbar-light custom-gradient1">
-	  <a class="navbar-brand text-light" href="/">Pressure Tracker</a> 
+	  <b><a class="navbar-brand text-light" href="/">Pressure Tracker</a> </b>
 	  <!-- The line above is what is written on the navbar name of the website-->
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
@@ -55,7 +60,7 @@
 			<a class="nav-link text-light" href="/">Home</a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link text-light" href="/benchmark">Tracker</a>
+			<a class="nav-link text-light" href="/tracker">Tracker</a>
 		  </li>
 		  {% if user and user.is_admin %}
 		  <li class="nav-item">

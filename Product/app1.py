@@ -140,7 +140,6 @@ def tracker():
         'data_s_n': data_s_n,
         'data_d_n': data_d_n
     }
-    
 
     # Display page with the results/benchmark
     return render_template('benchmark.html', data=data, user=session)
@@ -174,6 +173,18 @@ def add_result():
                 db.session.add(record)
                 db.session.commit()
                 # Return to benchmark page
+                systolic = int(request.form.get('systolic'))
+                diastolic = int(request.form.get('diastolic') )
+                daytime = request.form.get('daytime')
+                if (systolic > 150 or  diastolic > 100): #this if statement sends the user to an alert page when 
+                #the user inputs a reading that is too high, and can have negative health effects. 
+                    return render_template('alert.html', user=session) 
+
+                if (systolic < 90  or  diastolic < 60): 
+                    return render_template('alert1.html')
+
+
+
                 return redirect(url_for('tracker'))
     # Display page with the form
     return render_template('result_form.html', form=form, user=session)
@@ -310,6 +321,7 @@ def add_benchmark():
     return render_template('benchmark_form.html', form=form, user=session)
 """
 # Edit benchmark in the database
+
 
 
 @app.route('/tracker/edit/<id>', methods=['GET', 'POST'])
@@ -802,7 +814,7 @@ class AddResultForm(FlaskForm):
         render_kw={'placeholder': 'Diastolic'}
     )
     daytime = BooleanField(
-        'Daytime',
+        'Time of day',
         render_kw={
             'data-toggle': 'toggle',
             'data-size': 's',  # Extra small
@@ -842,7 +854,7 @@ class EditResultForm(FlaskForm):
         validators=[DataRequired('You must provide event date.')]
     )
     daytime = BooleanField(
-        'Daytime',
+        'Time of day',
         render_kw={
             'data-toggle': 'toggle',
             'data-size': 's',  # Extra small
@@ -1134,18 +1146,7 @@ class Result(db.Model):
     # Relationship
     user = db.relationship('User')
 
-#    def __init__(self, user_id, weight, height, date, bmi):
-#       self.user_id  = user_id
-#       self.weight   = weight
-#       self.height   = height
-#       self.bmi      = round(float(weight) / float(height) ** 2, 1)
-#       self.date     = date
-#
-#   def __repr__(self):
-#       return '<Result %r>' % self.weight
 
-
-# Database model for Benchmark entity
 class Benchmark(db.Model):
     __tablename__ = 'benchmark'
     id = db.Column(db.Integer, nullable=False,

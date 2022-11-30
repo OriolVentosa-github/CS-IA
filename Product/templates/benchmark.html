@@ -20,14 +20,15 @@
 			<div class="card my-4 mx-auto">
 				<h5 class="card-header text-white bg=class= custom-gradient1">Results Morning 🌞</h5>
 				<div class="card-body">
-					{% if data.results_d %}
-					<table class="table">
+					{% if data.results_n %}
+					<table class="table my-0">
 						<thead class="thead-light">
 							<tr>
 								<th>Systolic</th>
 								<th>Diastolic</th>
 								<th>Date</th>
 								<th></th>
+								<!-- this line is added because otherwise the tables that list the results will not have the top grey bar extend over all of them making it look bad-->
 							</tr>
 						</thead>
 						<tbody>
@@ -35,6 +36,7 @@
 							<tr>
 								<td>{{ item.systolic }}</td>
 								<td>{{ item.diastolic }}</td>
+								<!-- <td>{{item.daytime}}</td> -->
 								<td>{{ item.date.strftime('%d. %m. %Y') }}</td>
 								<td>
 									<a href="/result/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
@@ -48,7 +50,7 @@
 					{% else %}
 					<div>No results to display.</div>
 					{% endif %}
-
+					
 				</div>
 
 			</div>

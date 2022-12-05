@@ -5,18 +5,20 @@
 {% block style %}
 {%endblock %}
 
+<!-- this page is the tracker hmtl, it formats how the tracker page looks and how the data inputted by the user is injected into tables and graphs from the database -->
+
 {% block content %}
 <div class="container-fluid">
 	<div class="row my-4">
 		<div class="col-sm">
 			<div class="card mx-auto">
 				<h5 class="card-header text-white bg=class= custom-gradient1">Blood pressure over time, Morning🌞</h5>
-				<!--title for the graph-->
+				<!--title for the graph for morning-->
 				<div class="card-body">
 					<canvas id="myChart" width="400" height="180"></canvas>
 				</div>
 			</div>
-			<!-- Left column (wide) start -->
+			<!-- Results morning table -->
 			<div class="card my-4 mx-auto">
 				<h5 class="card-header text-white bg=class= custom-gradient1">Results Morning 🌞</h5>
 				<div class="card-body">
@@ -28,7 +30,7 @@
 								<th>Diastolic</th>
 								<th>Date</th>
 								<th></th>
-								<!-- this line is added because otherwise the tables that list the results will not have the top grey bar extend over all of them making it look bad-->
+								<!-- this line above is added because otherwise the tables that list the results will not have the top grey bar extend over all of them making it look bad-->
 							</tr>
 						</thead>
 						<tbody>
@@ -82,13 +84,13 @@
 							<tr>
 								<td>{{ item.systolic }}</td>
 								<td>{{ item.diastolic }}</td>
-								<!-- <td>{{item.daytime}}</td> -->
 								<td>{{ item.date.strftime('%d. %m. %Y') }}</td>
 								<td>
 									<a href="/result/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
 									<a href="/result/delete/{{ item.id }}" class="text-danger"><i
 											class="fa-solid fa-trash"></i></a>
 								</td>
+								<!-- symbols, trash and pencil, that when clicked take the user to the add result form or the edit form. -->
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -100,7 +102,6 @@
 				</div>
 
 			</div>
-			<!-- Left column (wide) end -->
 		</div>
 		<div class="col my-0 ">
 			<div class="col my-3">
@@ -112,6 +113,7 @@
 				<div class="card-body">
 					<img class="d-block w-100" src="{{ url_for('static', filename='pictures/nice4.jpg') }}"
 						alt="blood pressure range graph">
+						<!-- inserts image with blood pressure ranges, taken from the internet -->
 				</div>
 			</div>
 		</div>
@@ -141,6 +143,7 @@
 		borderColor: 'rgb(0,128,255)'
 			  }
 	]
+	// the chart that shows data for day, called data_d_d 
 		}
 	});
 	let ctxL2 = document.getElementById("myChart2").getContext('2d');
@@ -164,6 +167,7 @@
 	]
 		}
 	});
+	// the chart that shows data for night, called data_n_n
 </script>
 
 {% endblock %}

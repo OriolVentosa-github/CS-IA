@@ -1,21 +1,25 @@
 {% extends "base.html" %}
 
+<!--extends base.html file-->
+
 {% block title %}Pressure Tracker &middot; Administration{% endblock %}
+
+<!-- This hmtl document is the html for the admin interface, which shows the -->
 
 {% block content %}
 	<div class="container">
 	  <div class="row my-5">
 	    <div class="col-12">
-		  <h2>{{ data.title }}</h2>
+		  <b><h2 class="text-dark">User Adminstration</h2></b>
 		</div>
 	  </div>
       <div class="row my-5">
         <div class="col-12">
 		  <div class="card mx-auto">
-		    <h5 class="card-header text-black bg-success"><b>Users</b></h5>
+		    <h5 class="card-header text-light custom-gradient1"><b>Users</b></h5> <!-- -->
 			<div class="card-body">
 			  {% if data.users %}
-			  <table class="table">
+			  <table class="table"> <!-- this is the table with the data such as first name, last name, username etc. on the user interface-->
 			    <thead class="thead-light">
 				  <tr>
 				    <th>Firstname</th>
@@ -27,7 +31,8 @@
 				  </tr>
 				</thead>
 				<tbody>
-			      {% for item in data.users %}
+			      {% for item in data.users %} 
+				  <!-- This injects the data from the data base into the template for the interface -->
 				  <tr>
 			        <td>{{ item.firstname }}</td>
 			        <td>{{ item.lastname }}</td>
@@ -37,8 +42,9 @@
 					<td>
 					  {% if item.id != 1 %}
 					  <a href="/user/edit/{{ item.id }}"><i class="fa-solid fa-pencil"></i></a>
-					  <a href="/user/delete/{{ item.id }}" class="text-danger"><i class="fa-solid fa-trash"></i></a>
+					  <a href="/user/delete/{{ item.id }}" class="text-danger"><i class="fa-solid fa-trash"></i></a> 
 					  {% endif %}
+					  <!-- these are the symbols to delete or edit the profile of each account -->
 					</td>
 			      </tr>
 			      {% endfor %}
@@ -46,9 +52,11 @@
 			  </table>
 			  {% else %}
 			  <div>No users to display.</div>
+			  <!-- if there are no users, the interface will display the message "no users to display." -->
 			  {% endif %}
 			  <div>
 			    <a href="/user/add"><i class="fa-solid fa-plus"></i> New</a>
+				<!-- this line above is the button that will take you to create new account for the user -->
 			  </div>
 			</div>
 		  </div>
@@ -74,4 +82,5 @@
 		},
 	});
 	</script>
+	<!-- this javascript is the table and its contents, as well as its colour as the chosen rgb colour.-->
 {% endblock %}

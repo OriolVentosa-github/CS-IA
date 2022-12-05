@@ -2,6 +2,7 @@
 
 {% block title %}Pressure Tracker{% endblock %}
 
+<!-- This page is the first page the user sees when they enter the website, with the title in the center -->
 {% block style %}
 	<style>
 	@import url('https://fonts.googleapis.com/css2?family=Orelega+One&display=swap');
@@ -15,7 +16,8 @@
 	  left:0;
 	  width:50%;
 	  text-align:center;
-	  background-color: rgba(0,0,0,0.85); /* 0.85 is the opacity of the background in the main page, this determines how transparent the box the title is in is.*/
+	  background-color: rgba(0,0,0,0.85); /* 0.85 is the opacity of the background in the main page, this determines how transparent the box the title is in is. 
+	  the box in question here is in the middle with the title and a little phrase*/ 
 	  font-family:'Neue Helvetica',serif;
 	  border-radius: 1000px;
 	}
@@ -27,6 +29,7 @@
 	<div class="overlay p-3">
 	  <h1> <div class="text-light"> Pressure Tracker</div></h1>
 	  <h3> <div class="text-light"> The greatest wealth is good health!</div></h3>
+	  /* title and desprition in the middle of the page*/
 	</div>
 	
 	<div id="carouselBMIndfull" class="carousel slide" data-ride="carousel">
@@ -44,23 +47,24 @@
 		  <img class="d-block w-100" src="{{ url_for('static', filename='pictures/nice3.jpg') }}" alt="r6">
 		</div>
 	  </div>
-	  <a class="carousel-control-prev" href="#carouselTownofSalem" role="button" data-slide="prev">
+	  <a class="carousel-control-prev" href="#carouselbloodpressure" role="button" data-slide="prev">
 		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 		<span class="sr-only">Previous</span>
 	  </a>
-	  <a class="carousel-control-next" href="#carouselTownofSalem" role="button" data-slide="next"> 
+	  <a class="carousel-control-next" href="#carouselbloodpressure" role="button" data-slide="next"> 
 		<span class="carousel-control-next-icon" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	  </a>
 	</div>
-	
+	/* this is a carousel, rotates the selected pictures from the selected folder called 'pictures' behind the title and descriptiona */
 	<div class="p-2">
 	  <center>
         {% if user and user.loggedin %}
-	    <a href="/benchmark" class="btn btn-primary">Start here</a>
+	    <a href="/tracker" class="btn btn-primary">Start here</a>
 		{% else %}
 	    <a href="/login" class="btn btn-primary">Sign in</a>
 		{% endif %}
 	  </center>
 	</div>
+	/* buttons take you to locations, tracker and login page, depending on which the user clicks*/
 {% endblock %}

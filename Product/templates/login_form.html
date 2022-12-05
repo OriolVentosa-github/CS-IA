@@ -2,13 +2,14 @@
 
 {% block title %}Pressure Tracker &middot; Sign in{% endblock %}
 
-
+<!-- Login page, when user clicks button for log-in, they are redirected here -->
 
 
 {% block content %}
 	<div class="card my-5 mx-auto " style="max-width:30%">
 	  <h5 class="card-header text-light bg=class custom-gradient1"><b>Sign in</b></h5>
 	  <div class="card-body">
+		  <!-- formatting of the textboxes for inputting the username and password -->
 		<form method="POST">
 			{{ form.hidden_tag() }}
 			<div class="form-group">
@@ -21,7 +22,9 @@
 				<small class="form-text text-muted">{{ form.password.description }}</small>
 			</div>
 			{{ form.submit(class='btn btn-success') }}
+			<!-- the password and username are submitted to the database. -->
 			<a href="/register" class="btn btn-outline-secondary">Create account</a>
+			<!-- takes user to a new page if they dont have an account, to create one. -->
 		</form>
       </div>
     </div>

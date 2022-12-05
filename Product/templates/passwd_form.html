@@ -2,6 +2,8 @@
 
 {% block title %}Pressure Tracker &middot; Password{% endblock %}
 
+<!-- This html file is the change password form, when the user requests a password change-->
+
 {% block content %}
 	<div class="card my-5 mx-auto" style="max-width:50%">
 	  <h5 class="card-header text-light bg= class custom-gradient1"><b>{{ form.title }}</b></h5>
@@ -17,6 +19,7 @@
 			{{ form.passnew1.label }}
 			{{ form.passnew1(class='form-control') }}
 			<small class="form-text text-muted">{{ form.passnew1.description }}</small>
+			<!-- the user inputs both old password (password s/he is changing)to check that no unwanted changes are being made, and the new password. -->
 		  </div>
 		  <div class="form-group">
 			{{ form.passnew2.label }}
@@ -24,7 +27,8 @@
 			<small class="form-text text-muted">{{ form.passnew2.description }}</small>
 		  </div>
 		  {{ form.submit(class='btn btn-light bg=class custom-gradient1 text-light') }}
-		  <a href="/benchmark" class="btn btn-outline-secondary">Cancel</a>
+		  <a href="/tracker" class="btn btn-outline-secondary">Cancel</a>
+		  <!-- this button takes the user back to tracker data display page. -->
 		</form>		
 	  </div>
 	</div>

@@ -2,6 +2,7 @@
 
 {% block title %}Pressure Tracker &middot; {{ form.title }}{% endblock %}
 
+<!-- this form removes a result -->
 {% block content %}
 	<div class="card my-5 mx-auto" style="max-width:50%">
 	  <h5 class="card-header text-light bg=class custom-gradient1"><b>{{ form.title }}</b></h5>
@@ -10,7 +11,8 @@
 		<form method="POST">
 		  {{ form.hidden_tag() }}
 		  {{ form.submit(class='btn btn-danger') }}
-		  <a href="/benchmark" class="btn btn-outline-secondary">Cancel</a>
+		  <a href="/tracker" class="btn btn-outline-secondary">Cancel</a>
+		  <!-- if user decides to cancel request to delete the result, they press cancel and are taken back to the tracker data display page.  -->
 		</form>		
 	  </div>
 	</div>

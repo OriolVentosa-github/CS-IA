@@ -18,17 +18,14 @@
 	body {
 	   background-color: #fcb563;
 	}
-	/* .custom-gradient3 {
-	   background: rgb(41, 118, 138);
-	   background: linear-gradient(0deg, rgb(102, 31, 31) 0%, rgb(253, 101, 101) 70%); 
-	}  
-	this is a different colour to try xd xd xd xd*/
+	/* background colour of the entire website */
 	.custom-gradient1 {
 	   background: rgb(221, 92, 72);
 	   background: linear-gradient(0deg, rgb(199, 64, 44) 0%, rgb(233, 48, 48) 70%);
 	}
+	/* custom gradient created to use later */
 	.card {
-	/* override card border */
+	/* this overrides the card border, without it looks bad */
 	   border: 0;	
 	}
 	.card-header {
@@ -40,6 +37,7 @@
 			background: linear-gradient(0deg, rgb(49, 24, 24) 0%, rgb(19, 15, 15) 70%);
 		}
 	</style>
+	<!-- another gradient created for later use-->
 	{% block style %}{% endblock%}
 </head>
 
@@ -63,11 +61,13 @@
 			<a class="nav-link text-light" href="/tracker">Tracker</a>
 		  </li>
 		  {% if user and user.is_admin %}
+		  <!-- the line above means that the button for accessing administration will only be possible if the user is logged in as admin, if not, the button wont appear for them in the first place -->
 		  <li class="nav-item">
 			<a class="nav-link text-light" href="/admin">Administration</a>
 		  </li>
 		  {% endif %}
 		</ul>
+		<!-- this is the navbar, with all the buttons such as home, admin, tracker -->
 
 		<ul class="navbar-nav ml-auto">
 		  {% if user and user.loggedin %}
@@ -79,21 +79,21 @@
 			  <a class="dropdown-item" href="/password">Change password</a>
 			  <a class="dropdown-item" href="/logout">Sign out</a>
 			</div>
+			<!-- this is a dropdown, that allows the user to change password or log out, if they are logged in. -->
 		  </li>
 		  {% else %}
 		  <li class="nav-item">
 			<a class="nav-link" href="/login"><b>Sign in</b></a>
 		  </li>
+		  <!-- if the user is not logged in the dropdown will give them the option of going to the login page -->
 		  {% endif %}
 		</ul>
+	
 
 	  </div>
 	</nav>
 	<!-- Navigation bar end -->
 
-	<!-- Content start -->
-	{% block content %}{% endblock%}
-	<!-- Content end -->
 
 	<!-- jQuery -->
 	<script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>

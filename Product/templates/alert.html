@@ -2,15 +2,19 @@
 
 {% block title %}Pressure Tracker &middot; Alert system{% endblock %}
 
+<!-- the purpose of this html is that when the blood pressure is too high, the user will get sent here, where they'll be alerted about it -->
 {% block content %}
 <div class="alert alert-danger" role="alert">
     Don't just ignore this alert!
 </div>
 	<div class="card my-5 mx-auto" style="max-width:40%">
+		<!-- formatting for the alert  -->
 	  <h5 class="card-header text-light bg=class custom-gradient1"><b>ALERT! HIGH BLOOD PRESSURE</b></h5>
 	  <div class="card-body">
-	    <p>Your blood pressure has exceeded the safe parameters. Please contact your doctor immediately!</p>
+	    <p>Your blood pressure has exceeded the safe parameters. Please contact your doctor immediately!</p> 
+		<!-- message for the user about the pressure and what to do about the high blood pressure -->
 		  <b><a href="/tracker" class="btn btn-outline-secondary btn-danger text-white">Understood</a></b>
+		  <!-- this button takes you back to the tracker page -->
 		</form>		
         
 	  </div>

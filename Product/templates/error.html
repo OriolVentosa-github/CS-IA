@@ -2,6 +2,7 @@
 
 {% block title %}Pressure Tracker &middot; {{ error.code }} {{ error.name }}{% endblock %}
 
+<!-- purpose of this html file is to show error messages if they occur -->
 {% block content %}
 	<div class="card my-5 mx-auto" style="max-width:50%">
 	  <h5 class="card-header text-light bg=class custom-gradient1">Error</h5>
@@ -10,4 +11,5 @@
 		<p>{{ error.description }}</p>
 	  </div>
 	</div>
+	<!-- if there is an error the user will be redirected to this page, where s/he can see the code of the error and its name -->
 {% endblock %}

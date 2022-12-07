@@ -2,10 +2,11 @@
 
 {% block title %}Pressure Tracker &middot; {{ form.title }}{% endblock %}
 
-
+<!-- This is the form where the user puts in his result -->
 {% block content %}
 <div class="card my-5 mx-auto" style="max-width:30%">
-	<h5 class="card-header text-light bg=class custom-gradient1">{{ form.title }}</h5>
+	<h5 class="card-header text-light bg=class custom-gradient1">{{ form.title }}</h5> 
+	<!-- formatting the page -->
 	<div class="card-body">
 		<form method="POST">
 			{{ form.hidden_tag() }}
@@ -29,6 +30,7 @@
 			{{ form.submit(class='btn btn-primary') }}
 			<a href="/tracker" class="btn btn-outline-secondary">Cancel</a>
 		</form>
+		<!-- this button takes the user back to the tracker page, in case they want to cancel the new result form -->
 	</div>
 </div>
 {% endblock %}
@@ -39,5 +41,5 @@
 		format: "dd. mm. yyyy"
 	});
 </script>
-<!-- another  -->
+<!-- another datepicker for user to select date when inputting result -->
 {% endblock %}

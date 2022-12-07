@@ -28,6 +28,7 @@
 	/* this overrides the card border, without it looks bad */
 	   border: 0;	
 	}
+	
 	.card-header {
 	/* override dfault Bootstrap behaviour*/
 	   border-bottom: 0;
@@ -94,6 +95,9 @@
 	</nav>
 	<!-- Navigation bar end -->
 
+	<!-- start of content -->
+	{% block content %}{% endblock%}
+	<!-- end of content -->
 
 	<!-- jQuery -->
 	<script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>

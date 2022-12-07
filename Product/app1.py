@@ -286,43 +286,9 @@ def delete_result(id):
 # Add benchmark to the database
 ###########################################################
 
-"""
-@app.route('/tracker/add', methods=['GET', 'POST'])
-def add_benchmark():
-    # If user is not logged-in, abort adding
-    if not session or session['loggedin'] == False:
-        message = 'You do not have access permission.'
-        abort(401, message)
 
-    # Use form
-    form = AddBenchmarkForm()
 
-    # Process form
-    if form.validate_on_submit():
-        # Handle adding data to the database
-        if request.method == 'POST' and 'submit' in request.form:
-            # Create data record
-            record = Benchmark(
-                user_id=session['user_id'],
-                type=int(request.form.get('type')),
-                # category=int(request.form.get('category')), "not needed?"
-                result=request.form.get('result'),
-                date=datetime.strptime(request.form.get('date'), '%d. %m. %Y'),
-            )
-
-            # Save data to the database
-            db.session.add(record)
-            db.session.commit()
-
-            # Return to benchmark page
-            return redirect(url_for('results'))
-"
-    # Display page with the form
-    return render_template('benchmark_form.html', form=form, user=session)
-"""
 # Edit benchmark in the database
-
-
 
 @app.route('/tracker/edit/<id>', methods=['GET', 'POST'])
 def edit_benchmark(id):
@@ -555,6 +521,7 @@ def new_account():
                 username=request.form.get('username'),
                 password=md5(request.form.get(
                     'password').encode('utf-8')).hexdigest(),
+                # hashes the password with md5
                 birth_date=datetime.strptime(
                     request.form.get('birth_date'), '%d. %m. %Y'),
                 is_admin=False

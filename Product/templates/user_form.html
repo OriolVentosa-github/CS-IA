@@ -2,9 +2,11 @@
 
 {% block title %}Pressure Tracke &middot; {{ title }}{% endblock %}
 
+
 {% block content %}
 	<div class="card my-5 mx-auto" style="max-width:30%">
 	  <h5 class="card-header text-light bg=class custom-gradient1"><b>{{ form.title }}</b></h5>
+	  <!-- this is once again just formatting the page -->
 	  <div class="card-body">
 		<form method="POST">
 		  {{ form.hidden_tag() }}
@@ -38,11 +40,13 @@
 		  </div>
 		  {% endif %}
 		  {{ form.submit(class='btn btn-success') }}
+		  <!-- button will be green, to submit -->
   	      {% if user and user.is_admin %}
 		  <a href="/admin" class="btn btn-outline-secondary">Cancel</a>
 		  {% else %}
 		  <a href="/index" class="btn btn-outline-secondary">Cancel</a>
 		  {% endif %}
+		  <!-- cancel buttons -->
 		</form>		
 	  </div>
 	</div>
@@ -54,4 +58,5 @@
 		format: "dd. mm. yyyy"
 	  });
 	</script>
+	<!-- to choose date -->
 {% endblock %}
